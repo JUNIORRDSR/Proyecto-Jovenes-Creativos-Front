@@ -1,0 +1,25 @@
+body {
+  --bg-color: #0e0c22;
+  --card-bg: #1a1738;
+  --primary-color: #6c63ff;
+  --accent-color: #a855f7;
+  --text-color: #e0e0e0;
+  --text-muted: #9a9ab5;
+  --shadow-color: rgba(108, 99, 255, 0.2);
+  --border-color: rgba(108, 99, 255, 0.2);
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Links */
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+a:hover {
+  color: #c084fc;
+}
