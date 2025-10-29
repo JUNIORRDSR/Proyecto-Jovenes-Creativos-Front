@@ -1,0 +1,188 @@
+.stats-container {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 20px;
+  margin-top: 50px;
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stats-heading {
+  font-size: 20px;
+  color: #ffffff;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: "Orbitron";
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 5px;
+  
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(168, 85, 247, 0.1));
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px px rgba(108, 99, 255, 0.3);
+  border-color: #6c63ff;
+}
+
+
+.stat-icon {
+  font-size: 40px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(108, 99, 255, 0.2);
+  border-radius: 12px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  
+  line-height: 0.8;
+}
+
+.stat-label {
+  color: #a0a0a0;
+  font-size: 15px;
+  margin: 0;
+  align-content: center;
+}
+
+.stats-section {
+  margin-bottom: 5px;
+}
+
+.section-title {
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 15px;
+  font-family: "Orbitron";
+  text-align: center;
+}
+
+/* === ESTADO DE LOS JUEGOS === */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.status-item {
+  background: rgba(26, 26, 46, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #444;
+  transition: 0.3s ease;
+}
+
+.status-item:hover {
+  transform: translateY(-3px);
+}
+
+.status-item.completed {
+  border-color: #10b981;
+}
+
+.status-item.playing {
+  border-color: #f59e0b;
+}
+
+.status-item.pending {
+  border-color: #6b7280;
+}
+
+.status-count {
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffffff8f;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.most-played {
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(168, 85, 247, 0.1));
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s ease;
+}
+
+.most-played:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(108, 99, 255, 0.3);
+}
+
+.most-played-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.most-played-info h4 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.most-played-info p {
+  font-size: 14px;
+  color: #aaa;
+}
+
+@media (max-width: 768px) {
+  .stats-container {
+    padding: 20px;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid,
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .most-played {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .most-played-img {
+    width: 120px;
+    height: 120px;
+  }
+}
