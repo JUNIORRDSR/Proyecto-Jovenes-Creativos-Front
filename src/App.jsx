@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar.jsx";
 import Library from "./pages/Library.jsx";
@@ -28,13 +28,20 @@ function App() {
       hoursPlayed: 25,
     },
   ]);
-
+  
   const addGame = (newGame) => setGames((prev) => [...prev, newGame]);
   const editGame = (updatedGame) =>
     setGames((prev) =>
       prev.map((g) => (g.id === updatedGame.id ? updatedGame : g))
     );
   const deleteGame = (id) => setGames((prev) => prev.filter((g) => g.id !== id));
+
+    useEffect(() => {
+    fetch('https://6909419a2d902d0651b32224.mockapi.io/games')
+        .then((response) => response.json())
+        .then((data) => setGames(data))
+        .catch((error) => console.error("Error fetching games:", error));
+    }, []);
 
   return (
     <Router>
