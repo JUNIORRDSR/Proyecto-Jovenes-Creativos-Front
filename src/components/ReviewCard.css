@@ -31,17 +31,7 @@
 
 .review-rating {
   display: flex;
-  gap: 4px;
-}
-
-.star {
-  color: #4a4a5e;
-  font-size: 18px;
-}
-
-.star.filled {
-  color: #fbbf24;
-  text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+  align-items: center;
 }
 
 .review-text {

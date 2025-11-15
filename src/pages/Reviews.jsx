@@ -14,7 +14,7 @@ function Reviews({ games = [] }) {
   const handleSubmitReview = (reviewData) => {
     const newReview = {
       id: Date.now(),
-      gameName: reviewData.name,
+      gameName: reviewData.gameName || reviewData.name,
       review: reviewData.review,
       rating: reviewData.rating,
       date: new Date().toLocaleDateString("es-ES"),

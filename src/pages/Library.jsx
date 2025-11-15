@@ -29,13 +29,31 @@ function Library({ games, addGame, editGame, deleteGame }) {
     setEditingGame(null);
   };
 
-  const handleFormSubmit = (data) => {
-    if (editingGame) {
-      editGame({ ...data, id: editingGame.id });
-    } else {
-      addGame(data);
+  const handleFormSubmit = async (data) => {
+    const payload = {
+      ...data,
+      rating: Number(data.rating) || 0,
+      hoursPlayed: Number(data.hoursPlayed) || 0,
+    };
+
+    try {
+      if (editingGame) {
+        await editGame({ ...payload, id: editingGame.id });
+      } else {
+        await addGame(payload);
+      }
+      handleCloseForm();
+    } catch (error) {
+      console.error("Error guardando el juego:", error);
     }
-    handleCloseForm();
+  };
+
+  const handleDeleteGame = async (id) => {
+    try {
+      await deleteGame(id);
+    } catch (error) {
+      console.error("Error eliminando el juego:", error);
+    }
   };
 
   let filteredGames = [...games];
@@ -93,7 +111,7 @@ function Library({ games, addGame, editGame, deleteGame }) {
       {filteredGames.length > 0 ? (
         <div className="games-grid">
           {filteredGames.map((g) => (
-            <GameCard key={g.id} game={g} onEdit={handleEditClick} onDelete={deleteGame} />
+            <GameCard key={g.id} game={g} onEdit={handleEditClick} onDelete={handleDeleteGame} />
           ))}
         </div>
       ) : (

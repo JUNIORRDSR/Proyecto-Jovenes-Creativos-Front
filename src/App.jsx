@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar.jsx";
 import Library from "./pages/Library.jsx";
@@ -7,55 +7,84 @@ import Stats from "./components/Stats.jsx";
 import "./index.css";
 import "./theme.css";
 
+const API_BASE_URL = "http://localhost:4000";
+const GAMES_ENDPOINT = `${API_BASE_URL}/api/games`;
+
+const normalizeGame = (game) => ({
+  ...game,
+  rating: Math.min(Math.max(Number(game?.rating) || 0, 0), 5),
+  hoursPlayed: Number(game?.hoursPlayed) || 0,
+});
+
 function App() {
-  const [games, setGames] = useState([
-    {
-      id: 1,
-      name: "Cyberpunk 2077",
-      genre: "Acción",
-      cover: "https://wallpapers.com/images/hd/cyberpunk-2077-male-and-female-v-63386du3wmsbho7d.webp",
-      rating: 4.5,
-      status: "Jugando",
-      hoursPlayed: 45,
+  const [games, setGames] = useState([]);
+
+  const loadGames = useMemo(
+    () => async () => {
+      try {
+        const response = await fetch(GAMES_ENDPOINT);
+        if (!response.ok) throw new Error("No se pudo obtener la lista de juegos");
+        const data = await response.json();
+        setGames(data.map(normalizeGame));
+      } catch (error) {
+        console.error("Error fetching games:", error);
+      }
     },
-    {
-      id: 2,
-      name: "God of War",
-      genre: "Aventura",
-      cover: "https://wallpapers.com/images/hd/god-of-war-3d-kratos-n1im6er87u3hisap.webp",
-      rating: 5,
-      status: "Completado",
-      hoursPlayed: 25,
-    },
-  ]);
+    []
+  );
 
+  const addGame = async (newGame) => {
+    try {
+      const response = await fetch(GAMES_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newGame),
+      });
+      if (!response.ok) throw new Error("No se pudo crear el juego");
+      const created = normalizeGame(await response.json());
+      setGames((prev) => [...prev, created]);
+      return created;
+    } catch (error) {
+      console.error("Error adding game:", error);
+      throw error;
+    }
+  };
 
-  const addGame = (newGame) => setGames((prev) => [...prev, newGame]);
+  const editGame = async (updatedGame) => {
+    try {
+      const response = await fetch(`${GAMES_ENDPOINT}/${updatedGame.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedGame),
+      });
+      if (!response.ok) throw new Error("No se pudo actualizar el juego");
+      const saved = normalizeGame(await response.json());
+      setGames((prev) => prev.map((g) => (g.id === saved.id ? saved : g)));
+      return saved;
+    } catch (error) {
+      console.error("Error editing game:", error);
+      throw error;
+    }
+  };
 
-  const editGame = (updatedGame) =>
-    setGames((prev) =>
-      prev.map((g) => (g.id === updatedGame.id ? updatedGame : g))
-    );
-
-  const deleteGame = (id) =>
-    setGames((prev) => prev.filter((g) => g.id !== id));
-
+  const deleteGame = async (id) => {
+    try {
+      const response = await fetch(`${GAMES_ENDPOINT}/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok && response.status !== 204) {
+        throw new Error("No se pudo eliminar el juego");
+      }
+      setGames((prev) => prev.filter((g) => g.id !== id));
+    } catch (error) {
+      console.error("Error deleting game:", error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
-    fetch("https://6909419a2d902d0651b32224.mockapi.io/games")
-      .then((response) => response.json())
-      .then((data) => {
-        // Normalizar rating y hoursPlayed
-        const cleanedGames = data.map((g) => ({
-          ...g,
-          rating: Math.min(Math.max(Number(g.rating) || 0, 0), 5),
-          hoursPlayed: Number(g.hoursPlayed) || 0, 
-        }));
-
-        setGames(cleanedGames);
-      })
-      .catch((error) => console.error("Error fetching games:", error));
-  }, []);
+    loadGames();
+  }, [loadGames]);
 
   return (
     <Router>

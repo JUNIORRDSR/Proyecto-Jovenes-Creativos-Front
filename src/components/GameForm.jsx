@@ -37,12 +37,13 @@ function GameForm({ onSubmit, onCancel, editingGame }) {
           <label>URL de Portada</label>
           <input name="cover" value={formData.cover} onChange={handleChange} />
 
-          <label>Puntuación (1-5)</label>
+          <label>Puntuación (0-5, admite decimales)</label>
           <input
             name="rating"
             type="number"
-            min="1"
+            min="0"
             max="5"
+            step="0.1"
             value={formData.rating}
             onChange={handleChange}
             required

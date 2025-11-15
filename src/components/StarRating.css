@@ -1,0 +1,48 @@
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.star-rating.small .star-rating-shape {
+  font-size: 1rem;
+}
+
+.star-rating.medium .star-rating-shape {
+  font-size: 1.4rem;
+}
+
+.star-rating.large .star-rating-shape {
+  font-size: 2rem;
+}
+
+.star-rating-shape {
+  position: relative;
+  line-height: 1;
+}
+
+.star-rating-base,
+.star-rating-fill {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.star-rating-base {
+  color: #3f3f46;
+}
+
+.star-rating-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.star-rating-number {
+  font-size: 0.9rem;
+  color: #fef9c3;
+  font-weight: 600;
+}

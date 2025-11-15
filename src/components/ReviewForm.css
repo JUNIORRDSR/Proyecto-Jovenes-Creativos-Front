@@ -71,20 +71,34 @@ select:focus, textarea:focus {
   border-color: #a855f7;
 }
 
-.rating-stars {
+.rating-control {
   display: flex;
-  gap: 6px;
-  font-size: 24px;
-  cursor: pointer;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.rating-stars .star {
-  color: #4a4a5e;
+.rating-inputs {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
-.rating-stars .star.filled {
-  color: #fbbf24;
-  text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+.rating-inputs input[type="range"] {
+  flex: 1;
+  accent-color: #a855f7;
+}
+
+.rating-inputs input[type="number"] {
+  width: 90px;
+  background: rgba(25, 25, 50, 0.8);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.rating-inputs input[type="number"]:focus {
+  border-color: #a855f7;
 }
 
 .character-count {

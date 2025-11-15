@@ -1,16 +1,12 @@
 import "./GameCard.css";
 
 function GameCard({ game, onEdit, onDelete }) {
-  // 🔧 Aseguramos que la URL sea válida y tengamos un fallback local
-  const validCover =
-    game.cover && game.cover.startsWith("http")
-      ? game.cover
-      : "/placeholder.jpg";
+  const coverSrc = game.cover?.trim() || "/placeholder.jpg";
 
   return (
     <div className="game-card">
       <img
-        src={validCover}
+        src={coverSrc}
         alt={game.name || "Juego"}
         className="game-cover"
         loading="lazy"

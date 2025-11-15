@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./ReviewForm.css";
+import StarRating from "./StarRating.jsx";
 
 function ReviewForm({ games, onSubmit, onCancel }) {
   const [formData, setFormData] = useState({ gameId: "", review: "", rating: 0 });
@@ -10,14 +11,17 @@ function ReviewForm({ games, onSubmit, onCancel }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleStarClick = (rating) => setFormData({ ...formData, rating });
+  const handleRatingInput = (value) => {
+    const parsed = Math.min(Math.max(parseFloat(value) || 0, 0), 5);
+    setFormData((prev) => ({ ...prev, rating: Number(parsed.toFixed(1)) }));
+  };
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.gameId) newErrors.gameId = "Debes seleccionar un juego";
     if (!formData.review.trim()) newErrors.review = "La reseña no puede estar vacía";
     else if (formData.review.trim().length < 10) newErrors.review = "La reseña debe tener al menos 10 caracteres";
-    if (formData.rating === 0) newErrors.rating = "Debes calificar el juego";
+    if (Number(formData.rating) <= 0) newErrors.rating = "Debes calificar el juego";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -25,8 +29,13 @@ function ReviewForm({ games, onSubmit, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const selectedGame = games.find((game) => game.id === Number(formData.gameId));
-      onSubmit({ ...selectedGame, review: formData.review, rating: formData.rating });
+      const selectedGame = games.find((game) => String(game.id) === formData.gameId);
+      onSubmit({
+        ...(selectedGame || {}),
+        gameName: selectedGame?.name || "Juego desconocido",
+        review: formData.review,
+        rating: Number(formData.rating),
+      });
     }
   };
 
@@ -44,7 +53,7 @@ function ReviewForm({ games, onSubmit, onCancel }) {
             <select id="gameId" name="gameId" value={formData.gameId} onChange={handleChange}>
             <option value="">-- Elige un juego --</option>
             {games.map((game) => (
-              <option key={game.id} value={game.id}>
+              <option key={game.id} value={String(game.id)}>
                 {game.name}
               </option>
             ))}
@@ -54,17 +63,27 @@ function ReviewForm({ games, onSubmit, onCancel }) {
 
           <div className="form-group">
           <label>Calificación *</label>
-          <div className="rating-stars">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span
-                key={star}
-                onClick={() => handleStarClick(star)}
-                className={star <= formData.rating ? "star filled" : "star"}
-              >
-                ★
-              </span>
-            ))}
+          <div className="rating-control">
+            <StarRating value={formData.rating} size="large" showValue />
+            <div className="rating-inputs">
+              <input
+                type="range"
+                min="0"
+                max="5"
+                step="0.1"
+                value={formData.rating}
+                onChange={(e) => handleRatingInput(e.target.value)}
+              />
+              <input
+                type="number"
+                min="0"
+                max="5"
+                step="0.1"
+                value={formData.rating}
+                onChange={(e) => handleRatingInput(e.target.value)}
+              />
             </div>
+          </div>
             {errors.rating && <span className="error-message">{errors.rating}</span>}
           </div>
 
