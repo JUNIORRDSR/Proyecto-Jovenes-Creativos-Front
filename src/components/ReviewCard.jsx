@@ -1,7 +1,7 @@
 import "./ReviewCard.css";
 import StarRating from "./StarRating.jsx";
 
-function ReviewCard({ review }) {
+function ReviewCard({ review, onEdit, onDelete }) {
   const readableDate = review.date
     ? new Date(review.date).toLocaleDateString("es-ES")
     : new Date().toLocaleDateString("es-ES");
@@ -20,6 +20,14 @@ function ReviewCard({ review }) {
 
       <div className="review-footer">
         <span className="review-date">📅 {readableDate}</span>
+        <div className="review-actions">
+          <button className="review-action edit" onClick={() => onEdit?.(review)}>
+            ✏️ Editar
+          </button>
+          <button className="review-action delete" onClick={() => onDelete?.(review.id)}>
+            🗑️ Eliminar
+          </button>
+        </div>
       </div>
     </div>
   );

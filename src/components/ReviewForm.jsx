@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./ReviewForm.css";
 import StarRating from "./StarRating.jsx";
 
-function ReviewForm({ games, onSubmit, onCancel }) {
-  const [formData, setFormData] = useState({ gameId: "", review: "", rating: 0 });
+const emptyForm = { gameId: "", review: "", rating: 0 };
+
+function ReviewForm({ games, onSubmit, onCancel, editingReview }) {
+  const [formData, setFormData] = useState(emptyForm);
   const [errors, setErrors] = useState({});
+
+  const initialFormData = useMemo(() => {
+    if (!editingReview) return emptyForm;
+    return {
+      gameId: String(editingReview.gameId ?? editingReview?.game?._id ?? ""),
+      review: editingReview.review || "",
+      rating: Number(editingReview.rating) || 0,
+    };
+  }, [editingReview]);
+
+  useEffect(() => {
+    setFormData(initialFormData);
+  }, [initialFormData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +46,13 @@ function ReviewForm({ games, onSubmit, onCancel }) {
     if (validateForm()) {
       const selectedGame = games.find((game) => String(game.id) === formData.gameId);
       onSubmit({
+        id: editingReview?.id,
         gameId: selectedGame ? String(selectedGame.id) : formData.gameId,
-        gameName: selectedGame?.name || "Juego desconocido",
+        gameName:
+          selectedGame?.name || editingReview?.gameName || editingReview?.name || "Juego desconocido",
         review: formData.review,
         rating: Number(formData.rating),
-        cover: selectedGame?.cover,
+        cover: selectedGame?.cover || editingReview?.cover,
       });
     }
   };
@@ -44,7 +61,7 @@ function ReviewForm({ games, onSubmit, onCancel }) {
     <div className="review-form-overlay">
       <div className="review-form-container">
         <div className="review-form-header">
-          <h2>✍️ Escribir Reseña</h2>
+          <h2>{editingReview ? "✏️ Editar Reseña" : "✍️ Escribir Reseña"}</h2>
           <button className="close-btn" onClick={onCancel}>✕</button>
         </div>
 

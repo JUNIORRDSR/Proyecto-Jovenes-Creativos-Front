@@ -43,4 +43,36 @@
   text-align: right;
   color: #9ca3af;
   font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.review-action {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-action.edit {
+  background: #1d4ed8;
+  color: #f8fafc;
+}
+
+.review-action.delete {
+  background: #b91c1c;
+  color: #fee2e2;
+}
+
+.review-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
