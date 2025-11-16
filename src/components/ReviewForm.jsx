@@ -31,10 +31,11 @@ function ReviewForm({ games, onSubmit, onCancel }) {
     if (validateForm()) {
       const selectedGame = games.find((game) => String(game.id) === formData.gameId);
       onSubmit({
-        ...(selectedGame || {}),
+        gameId: selectedGame ? String(selectedGame.id) : formData.gameId,
         gameName: selectedGame?.name || "Juego desconocido",
         review: formData.review,
         rating: Number(formData.rating),
+        cover: selectedGame?.cover,
       });
     }
   };

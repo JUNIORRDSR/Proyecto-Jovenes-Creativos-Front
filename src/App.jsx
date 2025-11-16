@@ -6,9 +6,7 @@ import Reviews from "./pages/Reviews.jsx";
 import Stats from "./components/Stats.jsx";
 import "./index.css";
 import "./theme.css";
-
-const API_BASE_URL = "http://localhost:4000";
-const GAMES_ENDPOINT = `${API_BASE_URL}/api/games`;
+import { GAMES_ENDPOINT } from "./api/config.js";
 
 const normalizeGame = (game) => ({
   ...game,
